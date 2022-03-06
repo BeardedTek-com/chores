@@ -1,0 +1,13 @@
+#!/bin/bash
+docker-compose down
+docker build -t beardedtek/chores:latest .
+docker-compose up -d
+
+# Uncomment this section run sqlite_web interface
+sh ./install-sqlite_web
+
+# Uncomment this section to view apache error log
+#docker-compose exec chores tail -f /var/log/apache2/error.log
+
+# Uncomment to be brought directly to a shell
+#docker-compose exec chores bash

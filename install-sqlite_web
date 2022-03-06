@@ -1,0 +1,4 @@
+#!/bin/bash
+docker-compose exec chores touch /var/www/logs/sqlite_web
+docker-compose exec chores pip install sqlite_web
+docker-compose exec chores sqlite_web /var/www/db/chores.sqlite -p 9002 -H 0.0.0.0 -x

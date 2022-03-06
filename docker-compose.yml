@@ -1,0 +1,10 @@
+version: '2'
+services:
+  chores:
+    image: 'beardedtek/chores:latest'
+    restart: unless-stopped
+    ports:
+      - '9001:9001'
+      - '9002:9002'
+    #volumes:
+    #  - ./app:/var/www
