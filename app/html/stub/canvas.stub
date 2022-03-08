@@ -1,5 +1,5 @@
 <div class="the_wheel" align="center" valign="center">
-    <img class='flipper' src='/resource/flipper.png'>
+    <img class='flipper' src='../resource/flipper.png'>
     <div id='reset' class='reset' onClick="startSpin();">
         <span id='resetLink' class='resetLink'>
             <a>SPIN</a>
@@ -87,7 +87,7 @@
             wheelPower = powerLevel;
 
             // Light up the spin button by changing it's source image and adding a clickable class to it.
-            document.getElementById('spin_button').src = "/resource/spin_on.png";
+            document.getElementById('spin_button').src = "../resource/spin_on.png";
             document.getElementById('spin_button').className = "clickable";
         }
     }
