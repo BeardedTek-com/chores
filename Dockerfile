@@ -21,8 +21,7 @@ RUN git clone https://github.com/beardedtek-com/chores && mv chores/app/* /var/w
 # Setup CGI Environment & Set Permissions
 RUN bash /enable_cgi.sh \
  && chown -R 100:101 /var/www \
- && chmod -R 0770 /var/www \
- && chmod +x /writeConfig
+ && chmod -R 0770 /var/www
 
  # Cleanup
  RUN rm -rf /chores
