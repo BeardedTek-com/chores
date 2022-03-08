@@ -1,31 +1,29 @@
-# Docker file for chores
-FROM ubuntu:20.04
-ENV DEBIAN_FRONTEND=noninteractive
+FROM ghcr.io/home-assistant/amd64-base:3.14
 
-# Install apache, python, wget, curl
-RUN apt-get update && \
-	apt-get -y install software-properties-common apache2 wget curl \
-	python3 python3-dev python-is-python3 python3-pip nano
+RUN apk --no-cache add apache2 libxml2-dev apache2-utils py3-pip py3-pillow git bash nano nfs-utils
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Http settings
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
-ENV APACHE_PID_FILE /var/run/apache2.pid
-ENV APACHE_RUN_DIR /var/run/apache2
-ENV APACHE_LOCK_DIR /var/lock/apache2
-RUN mkdir -p $APACHE_RUN_DIR $APACHE_LOCK_DIR $APACHE_LOG_DIR
-COPY apache2 /etc/apache2
-RUN ln -s /etc/apache2/mods-available/cgi.load /etc/apache2/mods-enabled/cgi.load
+# Install python dependencies
+RUN pip install pytz && \
+    pip install python-dateutil && \
+    pip install requests && \
+    pip install sqlite_web
 
-# Copy the chores webapp to the docker container
-COPY app /var/www/
-RUN chown -R 33:1000 /var/www/ && chmod -R 0770 /var/www/ && chmod +x /var/www/html/cgi-bin/*
+# get rid of symlink /var/www/logs
+RUN rm -f /var/www/logs
 
-# Expose ports
-EXPOSE 9001
-EXPOSE 9002
+# Copy root filesystem
+COPY rootfs /
 
-# Entrypoint
-ENTRYPOINT ["/usr/sbin/apache2"]
-CMD ["-D", "FOREGROUND"]
+# get latest version of fEVR
+RUN git clone https://github.com/beardedtek/chores && mv chores/app/* /var/www/ \
+ && mkdir /var/www/logs && touch /var/www/logs/debug.log
+
+# Setup CGI Environment & Set Permissions
+RUN bash /enable_cgi.sh \
+ && chown -R 100:101 /var/www \
+ && chmod -R 0770 /var/www \
+ && chmod +x /writeConfig
+
+ # Cleanup
+ RUN rm -rf /chores

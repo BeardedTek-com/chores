@@ -1,10 +1,9 @@
-version: '2'
+version: '3'
 services:
-  chores:
-    image: 'beardedtek/chores:latest'
+  fevr:
+    image: ghcr.io/beardedtek/chores:alpine
+    container_name: fevr-alpine
     restart: unless-stopped
     ports:
-      - '9001:9001'
-      - '9002:9002'
-    #volumes:
-    #  - ./app:/var/www
+      - '8005:8001'
+      - '8006:8002'
