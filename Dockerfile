@@ -16,8 +16,7 @@ RUN rm -f /var/www/logs
 COPY rootfs /
 
 # get latest version of fEVR
-RUN git clone https://github.com/beardedtek-com/chores && mv chores/app/* /var/www/ \
- && mkdir /var/www/logs && touch /var/www/logs/debug.log
+RUN git clone https://github.com/beardedtek-com/chores && mv chores/app/* /var/www/
 
 # Setup CGI Environment & Set Permissions
 RUN bash /enable_cgi.sh \
